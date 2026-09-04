@@ -1,0 +1,492 @@
+/* Oddiy gazeta / maqola uslubi + HALLA yashil identity. */
+
+:root {
+  /* HALLA logotip ranglari */
+  --green: #62c92f;
+  --green-light: #EFFFF0;
+  --green-soft: #ddf8c8;
+  --green-dark: #173d0f;
+
+  /* Light mode (default) */
+  --page-bg: linear-gradient(180deg, #ffffff 0%, #ffffff 30%, #f2fce6 60%, #dcf5bd 100%);
+  --surface: rgba(255, 255, 255, 0.65);
+  --surface-solid: #ffffff;
+  --text: #11170f;
+  --text-muted: #52605c;
+  --border: rgba(23, 61, 15, 0.14);
+  --accent: #4ea523;
+  --accent-strong: #38801a;
+  --heading: #173d0f;
+  --accent-contrast: #ffffff;
+  --switch-off: rgba(23, 61, 15, 0.2);
+  --progress-track: rgba(23, 61, 15, 0.1);
+  --relation-selected: rgba(98, 201, 47, 0.16);
+  --input-bg: rgba(255, 255, 255, 0.8);
+  --input-border: rgba(23, 61, 15, 0.28);
+  --error: #9b1c1c;
+  --shadow: 0 1px 2px rgba(23, 61, 15, 0.04), 0 12px 40px rgba(23, 61, 15, 0.07);
+}
+
+:root[data-theme="dark"] {
+  --page-bg: linear-gradient(135deg, #081207 0%, #10250d 50%, #183b10 100%);
+  --surface: rgba(255, 255, 255, 0.045);
+  --surface-solid: #10250d;
+  --text: #f3f7f1;
+  --text-muted: #a9bda3;
+  --border: rgba(255, 255, 255, 0.12);
+  --accent: #7ee047;
+  --accent-strong: #7ee047;
+  --heading: #ffffff;
+  --accent-contrast: #081207;
+  --switch-off: rgba(255, 255, 255, 0.2);
+  --progress-track: rgba(255, 255, 255, 0.1);
+  --relation-selected: rgba(126, 224, 71, 0.16);
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --input-border: rgba(255, 255, 255, 0.2);
+  --error: #ff9b9b;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  min-height: 100%;
+  background: var(--page-bg);
+  background-attachment: fixed;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: transparent;
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", "Noto Serif", serif;
+  font-size: 19px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  transition: color 0.2s ease;
+}
+
+main {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+/* --- O'qish jarayoni (progress bar) --- */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  z-index: 100;
+  background: var(--progress-track);
+  pointer-events: none;
+}
+
+.reading-progress__bar {
+  height: 100%;
+  background: var(--accent-strong);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 0.12s linear;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress__bar {
+    transition: none;
+  }
+}
+
+/* --- Hero rasm --- */
+.article-hero {
+  margin: 0;
+}
+
+.article-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  aspect-ratio: 1400 / 787;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-solid);
+}
+
+/* --- Theme toggle --- */
+.theme-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 6px 10px 6px 14px;
+  color: var(--text-muted);
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.switch {
+  position: relative;
+  flex: none;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--switch-off);
+  transition: background 0.22s ease;
+}
+
+.theme-toggle[aria-pressed="true"] .switch {
+  background: var(--accent-strong);
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: transform 0.22s ease;
+}
+
+.theme-toggle[aria-pressed="true"] .switch::after {
+  transform: translateX(18px);
+}
+
+/* --- Maqola --- */
+.article {
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  padding: 44px 48px 40px;
+}
+
+.kicker {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+  margin: 0 0 10px;
+}
+
+.article-title {
+  font-size: 34px;
+  line-height: 1.22;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--heading);
+  margin: 0 0 12px;
+}
+
+.dateline {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 0 0 24px;
+}
+
+.rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+.lead {
+  font-size: 21px;
+  line-height: 1.7;
+}
+
+.article p {
+  margin: 0 0 22px;
+}
+
+.article h2 {
+  font-size: 24px;
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--heading);
+  margin: 38px 0 14px;
+}
+
+.note {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-muted);
+  border-left: 3px solid var(--accent);
+  padding-left: 16px;
+}
+
+/* --- Maqola ichidagi rasm va ro'yxat --- */
+.article-figure {
+  margin: 30px 0;
+}
+
+.article-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  aspect-ratio: 1400 / 787;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-solid);
+}
+
+.article-figure figcaption {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.article-list {
+  margin: 0 0 22px;
+  padding-left: 22px;
+}
+
+.article-list li {
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.article-list li::marker {
+  color: var(--accent-strong);
+}
+
+/* --- Yumshoq paydo bo'lish animatsiyasi --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.reveal.is-revealed,
+.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* --- Forma --- */
+.lead-form h2 {
+  margin-top: 0;
+}
+
+.field {
+  margin: 0 0 18px;
+}
+
+.field label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.field input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 18px;
+  padding: 12px 14px;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 3px;
+  transition: border-color 0.2s ease;
+}
+
+.field input::placeholder {
+  color: var(--text-muted);
+}
+
+.field input:hover {
+  border-color: var(--accent);
+}
+
+.field input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.relation-field {
+  margin: 0 0 18px;
+  padding: 0;
+  border: none;
+}
+
+.relation-field legend {
+  padding: 0;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.relation-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.relation-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  padding: 9px 15px;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.relation-option:hover {
+  border-color: var(--accent);
+}
+
+.relation-option input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent-strong);
+  flex: none;
+}
+
+.relation-option.is-selected {
+  border-color: var(--accent-strong);
+  background: var(--relation-selected);
+}
+
+.relation-option:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+button[type="submit"] {
+  font-family: inherit;
+  font-size: 17px;
+  letter-spacing: 0.04em;
+  padding: 13px 26px;
+  color: var(--accent-contrast);
+  background: var(--accent-strong);
+  border: 1px solid var(--accent-strong);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.error {
+  color: var(--error);
+  font-size: 16px;
+  margin: 6px 0 0;
+}
+
+.small {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 14px 0 0;
+}
+
+a {
+  color: var(--accent-strong);
+}
+
+.site-footer {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.site-footer p {
+  margin: 0 0 8px;
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 18px;
+  }
+  main {
+    padding: 20px 14px 40px;
+  }
+  .article {
+    padding: 26px 20px 24px;
+  }
+  .article-hero img,
+  .article-figure img {
+    border-radius: 12px;
+  }
+  .article-figure {
+    margin: 24px 0;
+  }
+  .relation-options {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .relation-option {
+    border-radius: 8px;
+  }
+  .article-title {
+    font-size: 27px;
+  }
+  .lead {
+    font-size: 19px;
+  }
+  .article h2 {
+    font-size: 21px;
+  }
+}
