@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 4000;
 // Faqat sizdagi mavjud Netlify linki
 const DEFAULT_ALLOWED_ORIGINS = [
   "https://eclectic-kringle-3361d3.netlify.app",
-  "https://halila-frontend2.netlify.app/"
+  "https://halila-frontend2.netlify.app"
 ];
 
 const normalizeOrigin = (o) => o.trim().replace(/\/+$/, "");
