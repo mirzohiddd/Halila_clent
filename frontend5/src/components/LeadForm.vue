@@ -87,7 +87,7 @@ const props = defineProps({
   intro: { type: String, default: null },
 });
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://halila-clent.onrender.com";
 
 const nameId = `name-${props.source}`;
 const phoneId = `phone-${props.source}`;

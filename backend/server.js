@@ -4,22 +4,23 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import leadsRouter from "./routes/leads.js";
+
 const app = express();
 const PORT = process.env.PORT || 4000;
+
+// Faqat sizdagi mavjud Netlify linki
 const DEFAULT_ALLOWED_ORIGINS = [
-  "https://coruscating-frangipane-918c46.netlify.app",
-  "https://aesthetic-cuchufli-769539.netlify.app",
-  "https://clever-torte-8829b8.netlify.app",
-  "https://shimmering-bonbon-b8bb50.netlify.app",
-  "https://zippy-hotteok-59dc0b.netlify.app",
+  "https://eclectic-kringle-3361d3.netlify.app"
 ];
+
 const normalizeOrigin = (o) => o.trim().replace(/\/+$/, "");
 
-const ALLOWED_ORIGINS = (
-  process.env.ALLOWED_ORIGIN
-    ? process.env.ALLOWED_ORIGIN.split(",")
-    : DEFAULT_ALLOWED_ORIGINS
-)
+// .env ichidagi localhost'lar va Netlify linkini birlashtirish
+const envOrigins = process.env.ALLOWED_ORIGIN
+  ? process.env.ALLOWED_ORIGIN.split(",")
+  : [];
+
+const ALLOWED_ORIGINS = [...DEFAULT_ALLOWED_ORIGINS, ...envOrigins]
   .map(normalizeOrigin)
   .filter(Boolean);
 
@@ -38,6 +39,7 @@ app.use(
     },
   })
 );
+
 app.use(express.json({ limit: "20kb" }));
 
 const leadsLimiter = rateLimit({
@@ -47,9 +49,11 @@ const leadsLimiter = rateLimit({
   legacyHeaders: false,
   message: { message: "Жуда кўп уриниш. Бироздан сўнг қайта уриниб кўринг." },
 });
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
+
 app.use("/api/leads", leadsLimiter, leadsRouter);
 
 app.use((req, res) => {
