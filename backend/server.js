@@ -18,8 +18,6 @@ const DEFAULT_ALLOWED_ORIGINS = [
 ];
 
 const normalizeOrigin = (o) => o.trim().replace(/\/+$/, "");
-
-// .env ichidagi localhost'lar va Netlify linkini birlashtirish
 const envOrigins = process.env.ALLOWED_ORIGIN
   ? process.env.ALLOWED_ORIGIN.split(",")
   : [];

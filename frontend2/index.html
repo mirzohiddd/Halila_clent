@@ -1,9 +1,14 @@
+```html
 <!doctype html>
 <html lang="uz">
   <head>
     <meta charset="UTF-8" />
 
-    <link rel="icon" type="image/png" href="/halila-logo.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/halila-logo.png"
+    />
 
     <meta
       name="viewport"
@@ -17,9 +22,9 @@
         if(f.fbq)return;
 
         n=f.fbq=function(){
-          n.callMethod ?
-          n.callMethod.apply(n,arguments) :
-          n.queue.push(arguments)
+          n.callMethod
+            ? n.callMethod.apply(n,arguments)
+            : n.queue.push(arguments)
         };
 
         if(!f._fbq)f._fbq=n;
@@ -42,7 +47,7 @@
         'https://connect.facebook.net/en_US/fbevents.js'
       );
 
-      fbq('init', '1795997191573530');
+      fbq('init', '1849894626039276');
       fbq('track', 'PageView');
     </script>
     <!-- End Meta Pixel Code -->
@@ -57,19 +62,22 @@
 
   <body>
 
-    <!-- Meta Pixel noscript -->
     <noscript>
       <img
         height="1"
         width="1"
         style="display:none"
-        src="https://www.facebook.com/tr?id=1795997191573530&ev=PageView&noscript=1"
+        src="https://www.facebook.com/tr?id=1849894626039276&ev=PageView&noscript=1"
       />
     </noscript>
 
     <div id="app"></div>
 
-    <script type="module" src="/src/main.js"></script>
+    <script
+      type="module"
+      src="/src/main.js"
+    ></script>
+
   </body>
 </html>
-
+```
